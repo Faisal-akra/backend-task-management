@@ -1,5 +1,6 @@
 const userModel = require("../models/user.js");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const errorMsg = "unexpected error";
 const register = async (req, res) => {
@@ -12,7 +13,7 @@ const register = async (req, res) => {
       });
     }
 
-    const isExist = await userModel.findOne({email});
+    const isExist = await userModel.findOne({ email });
 
     if (isExist) {
       res.status(202).json({
@@ -25,15 +26,68 @@ const register = async (req, res) => {
     userModel.create({
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     res.status(200).json({
-      msg: "user is registred successfully"
-    })
+      msg: "user is registred successfully",
+    });
   } catch (error) {
     console.log(errorMsg, error);
+    res.status(404).json({
+      msg: "user is not registered!",
+    });
   }
 };
 
-module.exports = register;
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(404).json({
+        msg: "all fields are required!",
+      });
+    }
+
+    const checkEmail = await userModel.findOne({ email });
+
+    if (!checkEmail) {
+      return res.status(404).json({
+        msg: "user is not found!",
+      });
+    }
+
+
+    const comparePass = await bcrypt.compare(password, checkEmail.password);
+
+    if(!comparePass) {
+      return res.status(404).json({
+        msg: "Invalid Credentials!"
+      })
+    }
+
+    const token = jwt.sign({id: checkEmail.id},    process.env.SECRET_KEY, {expiresIn: "10hr" });
+
+
+
+
+    res.status(200).json({
+      msg: "user is loged in successfully",
+      token: token
+    });
+  } catch (error) {
+    console.log(error, errorMsg);
+    res.status(404).json({
+      msg: "user is not login!",
+    });
+  }
+};
+
+
+
+
+module.exports = {
+  register,
+  login,
+};
