@@ -86,7 +86,7 @@ const getProfile = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const user = await userModel.findById({ id });
+    const user = await userModel.findById( id );
 
     if (!user) {
       return res.status(404).json({
@@ -106,8 +106,41 @@ const getProfile = async (req, res) => {
   }
 };
 
+const editProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const update = req.body;
+
+    const user =  userModel.findById(id);
+
+    if (!user) {
+      return res.status(404).json({
+        msg: "user is not found!"
+      })
+    }
+
+    const updateProfile = await userModel.findByIdAndUpdate(id, update, {
+      new: true
+    })
+
+    res.status(200).json({
+      msg: "profile update successfully",
+      updatedProfile: updateProfile
+    })
+
+    
+
+  } catch (error) {
+    console.log(error, errorMsg);
+    res.status(404).json({
+      msg: "error",
+    });
+  }
+};
 module.exports = {
   register,
   login,
-  getProfile
+  getProfile,
+  editProfile
 };

@@ -1,11 +1,11 @@
 const express = require("express");
-const { register, login, getProfile } = require("../controllers/user");
+const { register, login, getProfile, editProfile } = require("../controllers/user");
 const middleware = require("../middleware/middleware")
 
 const userRouter = express.Router();
 
-userRouter.put("/register", register);
-userRouter.put("/login", login);
+userRouter.post("/register", register);
+userRouter.post("/login", login);
 userRouter.get("/getProfile/:id", middleware, getProfile);
-
+userRouter.post('/editProfile/:id', middleware, editProfile)
 module.exports = userRouter;
