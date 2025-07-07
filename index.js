@@ -3,11 +3,13 @@ const app = express();
 const connectDB = require("./config/connect");
 const dotenv = require("dotenv");
 const userRouter = require("./routes/user");
+const taskRoute = require("./routes/task");
 dotenv.config();
 connectDB();
 app.use(express.json());
 
-app.use('/api/auth', userRouter )
+app.use("/api/auth", userRouter);
+app.use("/api/task", taskRoute);
 
 const port = "https://localhost9000";
 

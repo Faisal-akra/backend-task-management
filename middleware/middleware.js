@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const userModel = require("../models/user.js");
+const userModel = require("../models/user");
 
 const verifyUSer = async (req, res, next) => {
   try {
@@ -13,7 +13,7 @@ const verifyUSer = async (req, res, next) => {
 
     const { id } = jwt.verify(token, process.env.SECRET_KEY);
 
-    const user = userModel.findById(id);
+    const user = await userModel.findById(id);
 
     if (!user) {
       return res.status(404).json({
@@ -27,6 +27,5 @@ const verifyUSer = async (req, res, next) => {
     console.log(error, "you are not authorized");
   }
 };
-
 
 module.exports = verifyUSer;

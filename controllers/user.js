@@ -66,7 +66,7 @@ const login = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: checkEmail.id }, process.env.SECRET_KEY, {
+    const token = jwt.sign({ id: checkEmail._id }, process.env.SECRET_KEY, {
       expiresIn: "10hr",
     });
 
