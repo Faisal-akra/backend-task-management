@@ -53,28 +53,26 @@ const fetchAllTask = async (req, res) => {
   }
 };
 
-
-const fetchSpecificTask = async(req, res) => {
+const fetchSpecificTask = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
-    const task = await taskModel.findById({_id: id, user: req.user._id});
+    const task = await taskModel.findById({ _id: id, user: req.user._id });
 
-    if(!task) {
+    if (!task) {
       return res.status(404).json({
-        msg: "task is not found!"
-      })
+        msg: "task is not found!",
+      });
     }
 
     res.status(200).json({
       msg: "task fetch successfully",
-      task: task
-    })
+      task: task,
+    });
   } catch (error) {
-    console.log(error, errorMsg)
+    console.log(error, errorMsg);
   }
-}
-
+};
 
 const deleteSpecificTask = async (req, res) => {
   try {
@@ -88,19 +86,16 @@ const deleteSpecificTask = async (req, res) => {
       });
     }
     const task = await taskModel.findById(id);
-     await taskModel.findOneAndDelete(id, task);
+    await taskModel.findOneAndDelete(id, task);
 
     res.status(200).json({
       msg: "task deleted successfully",
       deletedTask: task,
-      
-    })
+    });
   } catch (error) {
     console.log(error, "error");
   }
 };
-
-
 
 const fetchTaskByStatus = async (req, res) => {
   try {
@@ -158,6 +153,38 @@ const fetchTaskByPriority = async (req, res) => {
   }
 };
 
+const updateSpecificTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const update = req.body;
 
+    if (!update.status) update.status = "Completed";
+    if (!update.priority) update.priority = "Medium";
+    const updateTask = await taskModel.findByIdAndUpdate(id, update, {
+      new: true,
+    });
 
-module.exports = { createTask, fetchAllTask, fetchSpecificTask, deleteSpecificTask, fetchTaskByStatus, fetchTaskByPriority };
+    if (!updateTask) {
+      return res.status(404).json({
+        msg: "This user tasks is empty",
+      });
+    }
+
+    res.status(200).json({
+      msg: "upadte task successfully🎊",
+      task: updateTask,
+    });
+  } catch (error) {
+    console.log(error, "error");
+  }
+};
+
+module.exports = {
+  createTask,
+  fetchAllTask,
+  fetchSpecificTask,
+  deleteSpecificTask,
+  fetchTaskByStatus,
+  fetchTaskByPriority,
+  updateSpecificTask
+};
