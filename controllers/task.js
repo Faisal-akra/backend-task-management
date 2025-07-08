@@ -102,5 +102,62 @@ const deleteSpecificTask = async (req, res) => {
 
 
 
+const fetchTaskByStatus = async (req, res) => {
+  try {
+    const { status } = req.params;
+    const userId = req.user._id;
+    const tasks = await taskModel.find({ user: userId, status: status });
+    if (!tasks) {
+      return res.status(404).json({
+        msg: "this user task is nothing",
+      });
+    }
 
-module.exports = { createTask, fetchAllTask, fetchSpecificTask, deleteSpecificTask };
+    if (tasks.length === 0) {
+      return res.status(404).json({
+        msg: "task is not match",
+      });
+    }
+    res.status(200).json({
+      msg: "tasks fetch successfully",
+      tasks: tasks,
+    });
+  } catch (error) {
+    console.log(error, "error");
+    res.status(404).json({
+      msg: "error",
+    });
+  }
+};
+
+const fetchTaskByPriority = async (req, res) => {
+  try {
+    const { priority } = req.params;
+    const userId = req.user._id;
+    const tasks = await taskModel.find({ user: userId, priority: priority });
+    if (!tasks) {
+      return res.status(404).json({
+        msg: "this user task is nothing",
+      });
+    }
+
+    if (tasks.length === 0) {
+      return res.status(404).json({
+        msg: "this priority of your task is not match",
+      });
+    }
+    res.status(200).json({
+      msg: "tasks fetch successfully",
+      tasks: tasks,
+    });
+  } catch (error) {
+    console.log(error, "error");
+    res.status(404).json({
+      msg: "error",
+    });
+  }
+};
+
+
+
+module.exports = { createTask, fetchAllTask, fetchSpecificTask, deleteSpecificTask, fetchTaskByStatus, fetchTaskByPriority };
