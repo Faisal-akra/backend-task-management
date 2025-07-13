@@ -50,6 +50,9 @@ const fetchAllTask = async (req, res) => {
     });
   } catch (error) {
     console.log(error, errorMsg);
+    res.status(404).json({
+      msg: "internal server error"
+    })
   }
 };
 
@@ -71,6 +74,9 @@ const fetchSpecificTask = async (req, res) => {
     });
   } catch (error) {
     console.log(error, errorMsg);
+    res.status(404).json({
+      msg: "internal server error"
+    })
   }
 };
 
@@ -94,6 +100,9 @@ const deleteSpecificTask = async (req, res) => {
     });
   } catch (error) {
     console.log(error, "error");
+    res.status(404).json({
+      msg: "internal server error"
+    })
   }
 };
 
@@ -120,7 +129,7 @@ const fetchTaskByStatus = async (req, res) => {
   } catch (error) {
     console.log(error, "error");
     res.status(404).json({
-      msg: "error",
+      msg: "internal server error",
     });
   }
 };
@@ -148,7 +157,7 @@ const fetchTaskByPriority = async (req, res) => {
   } catch (error) {
     console.log(error, "error");
     res.status(404).json({
-      msg: "error",
+      msg: "internal server error",
     });
   }
 };
@@ -176,6 +185,9 @@ const updateSpecificTask = async (req, res) => {
     });
   } catch (error) {
     console.log(error, "error");
+    res.status(404).json({
+      msg: "internal server error"
+    })
   }
 };
 

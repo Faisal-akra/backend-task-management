@@ -101,7 +101,7 @@ const getProfile = async (req, res) => {
   } catch (error) {
     console.log(error, errorMsg);
     res.status(404).json({
-      msg: "error",
+      msg: "internal server error",
     });
   }
 };
@@ -134,7 +134,7 @@ const editProfile = async (req, res) => {
   } catch (error) {
     console.log(error, errorMsg);
     res.status(404).json({
-      msg: "error",
+      msg: "internal server error",
     });
   }
 };
