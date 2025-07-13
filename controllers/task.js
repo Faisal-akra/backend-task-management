@@ -110,7 +110,7 @@ const fetchTaskByStatus = async (req, res) => {
   try {
     const { status } = req.params;
     const userId = req.user._id;
-    const tasks = await taskModel.find({ user: userId, status: status });
+    const tasks = await taskModel.find({ user: userId, status: { $regex: new RegExp(`^${status}$`, 'i') }  });
     if (!tasks) {
       return res.status(404).json({
         msg: "this user task is nothing",
@@ -138,7 +138,7 @@ const fetchTaskByPriority = async (req, res) => {
   try {
     const { priority } = req.params;
     const userId = req.user._id;
-    const tasks = await taskModel.find({ user: userId, priority: priority });
+    const tasks = await taskModel.find({ user: userId, priority: { $regex: new RegExp(`^${priority}$`, 'i') }  });
     if (!tasks) {
       return res.status(404).json({
         msg: "this user task is nothing",
