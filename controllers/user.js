@@ -84,10 +84,6 @@ const login = async (req, res) => {
 
 const getProfile = async (req, res) => {
   try {
-    // const { id } = req.params;
-
-    // const user = await userModel.findById( id );
-
     const user = req.user;
     if (!user) {
       return res.status(404).json({
@@ -97,9 +93,9 @@ const getProfile = async (req, res) => {
 
     res.status(200).json({
       msg: "succesfully get profile",
-      // profile: `this is your profile ${user}`,
+
       name: user.name,
-      email: user.email
+      email: user.email,
     });
   } catch (error) {
     console.log(error, errorMsg);
@@ -115,25 +111,22 @@ const editProfile = async (req, res) => {
 
     const update = req.body;
 
-    const user =  userModel.findById(id);
+    const user = userModel.findById(id);
 
     if (!user) {
       return res.status(404).json({
-        msg: "user is not found!"
-      })
+        msg: "user is not found!",
+      });
     }
 
     const updateProfile = await userModel.findByIdAndUpdate(id, update, {
-      new: true
-    })
+      new: true,
+    });
 
     res.status(200).json({
       msg: "profile update successfully",
-      updatedProfile: updateProfile
-    })
-
-    
-
+      updatedProfile: updateProfile,
+    });
   } catch (error) {
     console.log(error, errorMsg);
     res.status(404).json({
@@ -145,5 +138,5 @@ module.exports = {
   register,
   login,
   getProfile,
-  editProfile
+  editProfile,
 };
