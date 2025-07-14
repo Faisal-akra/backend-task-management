@@ -40,7 +40,8 @@ const fetchAllTask = async (req, res) => {
 
     if (!task) {
       return res.status(404).json({
-        msg: "this is task is nothing",
+        msg: "your tasks is empty",
+        task: []
       });
     }
 
@@ -118,8 +119,9 @@ const fetchTaskByStatus = async (req, res) => {
     }
 
     if (tasks.length === 0) {
-      return res.status(404).json({
-        msg: "task is not match",
+      return res.status(200).json({
+        msg: "This status task is nothing",
+        tasks: []
       });
     }
     res.status(200).json({
@@ -148,6 +150,7 @@ const fetchTaskByPriority = async (req, res) => {
     if (tasks.length === 0) {
       return res.status(404).json({
         msg: "this priority of your task is not match",
+        tasks: []
       });
     }
     res.status(200).json({
