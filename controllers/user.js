@@ -84,10 +84,11 @@ const login = async (req, res) => {
 
 const getProfile = async (req, res) => {
   try {
-    const { id } = req.params;
+    // const { id } = req.params;
 
-    const user = await userModel.findById( id );
+    // const user = await userModel.findById( id );
 
+    const user = req.user;
     if (!user) {
       return res.status(404).json({
         msg: "user is not found",
@@ -96,7 +97,9 @@ const getProfile = async (req, res) => {
 
     res.status(200).json({
       msg: "succesfully get profile",
-      profile: `this is your profile ${user}`,
+      // profile: `this is your profile ${user}`,
+      name: user.name,
+      email: user.email
     });
   } catch (error) {
     console.log(error, errorMsg);

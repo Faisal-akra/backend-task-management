@@ -6,6 +6,6 @@ const userRouter = express.Router();
 
 userRouter.post("/register", register);
 userRouter.post("/login", login);
-userRouter.get("/getProfile/:id", middleware, getProfile);
+userRouter.get("/getProfile", middleware, getProfile);
 userRouter.post('/editProfile/:id', middleware, editProfile)
 module.exports = userRouter;
